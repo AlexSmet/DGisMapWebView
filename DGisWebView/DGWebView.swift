@@ -1,5 +1,5 @@
 //
-//  DGisWebView.swift
+//  DGWebView.swift
 //
 //
 //  Created by Aleksandr Smetannikov on 27/12/2019.
@@ -9,16 +9,16 @@
 import Foundation
 import WebKit
 
-public protocol DGisWebViewDelegate {
+public protocol DGWebViewDelegate {
     func mapLoaded() -> Void
     func mapError(_ :String) -> Void
     func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
 }
 
-public class DGisWebView: UIView, WKNavigationDelegate, WKUIDelegate {
+public class DGWebView: UIView, WKNavigationDelegate {
     private var webView: WKWebView!
 
-    public var delegate: DGisWebViewDelegate?
+    public var delegate: DGWebViewDelegate?
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -43,8 +43,9 @@ public class DGisWebView: UIView, WKNavigationDelegate, WKUIDelegate {
 
     /// Инициализация карты
     public func initMap() {
-        let bundle = Bundle(for: DGisWebView.self)
-        guard let fileUrl = bundle.url(forResource: "DGisMap", withExtension: "html") else {
+        let bundle = Bundle(for: DGWebView.self)
+        guard let fileUrl = bundle.url(forResource: "DGMap", withExtension: "html") else {
+            delegate?.mapError("Ошибка при загрузке карты: нет доступа к ресурсам")
             return
         }
         let urlRequest = URLRequest(url: fileUrl)
@@ -144,5 +145,9 @@ public class DGisWebView: UIView, WKNavigationDelegate, WKUIDelegate {
         }
 
         decisionHandler(.cancel)
+    }
+
+    public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        delegate?.mapError("Ошибка при загрузке карты")
     }
 }

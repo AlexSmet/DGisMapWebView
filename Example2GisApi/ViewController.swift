@@ -9,10 +9,10 @@
 import UIKit
 import MBProgressHUD
 
-class ViewController: UIViewController, DGisWebViewDelegate{
+class ViewController: UIViewController, DGWebViewDelegate{
 
 
-    @IBOutlet weak var mapView: DGisWebView!
+    @IBOutlet weak var mapView: DGWebView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +23,8 @@ class ViewController: UIViewController, DGisWebViewDelegate{
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        mapView.initMap()
         MBProgressHUD.showAdded(to: view, animated: true)
+        mapView.initMap()
     }
 
     func mapLoaded() {
@@ -35,6 +35,7 @@ class ViewController: UIViewController, DGisWebViewDelegate{
     }
 
     func mapError(_ errorMessage: String) {
+        MBProgressHUD.hide(for: view, animated: true)
         print("2Gis map error: \(errorMessage)")
     }
 

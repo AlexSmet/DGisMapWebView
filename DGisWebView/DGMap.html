@@ -36,23 +36,25 @@
                 } 
                 // создаем карту
                 map = DG.map('map', {
-                    center: DG.latLng(latitude, longitude),
+                    //center: DG.latLng(latitude, longitude),
                     zoomControl: false,
                     fullscreenControl: false,
-                    zoom: zoom,
+                    //zoom: zoom,
                     setView: false,
                     minZoom: minZoom,
                     geoclicker: false,
                     poi: false,
                     maxBounds: bounds
                 });
+                map.on('zoomend', element => setMarkersByZoomLevel(element.target.zoom));
+                map.on('load', element => onMapLoaded());
+
                 // создаем группу для маркеров
                 markers = DG.layerGroup();  
                 markers.addTo(map);
 
-                map.on('zoomend', element => setMarkersByZoomLevel(element.target.zoom));
-                //  сообщаем приложению, что карта загружена
-                onMapLoaded()
+                // позиционируем карту
+                setView(latitude, longitude, zoom)
             });
         }
 

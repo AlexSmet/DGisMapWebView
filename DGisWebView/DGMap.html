@@ -50,10 +50,12 @@
                 map.on('load', element => onMapLoaded());
 
                 // создаем группу для маркеров
-                markers = DG.layerGroup();  
+                markers = DG.featureGroup();
                 markers.addTo(map);
+                // добавляем обработчик клика для всех маркеров группы
+                markers.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
 
-                // позиционируем карту
+                // позиционируем карту, что бы стрельнуло событие инициализации карты ('load')
                 setView(latitude, longitude, zoom)
             });
         }
@@ -119,7 +121,6 @@
                 // создаем маркер
                 var marker = DG.marker([latitude, longitude], {icon: icon});
                 marker.id = id
-                marker.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
                 // добавляем маркер в группу
                 marker.addTo(markers)
             }

@@ -1,0 +1,156 @@
+<html><head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, maximum-scale=1" />
+    <title>Карта 2GIS</title>
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            margin: 0px;
+        }
+    </style>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script type="text/javascript">
+        var iconList = [];
+        var markers = null;
+        var smallIconUrl = 'https://img.icons8.com/bubbles/50/000000/twitter.png'
+        var smallIcon
+
+        DG.customConfig = {
+            tileServer: '//tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_sd&layerType=nc',
+            retinaTileServer: '//tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_hd&layerType=nc',
+            poiMetaServer: '//tile{s}.maps.2gis.com/poi?x={x}&y={y}&z={z}&v=1&ts=online_sd&layerType=nc',
+            retinaPoiMetaServer: '//tile{s}.maps.2gis.com/poi?x={x}&y={y}&z={z}&v=1&ts=online_hd&layerType=nc'
+        };
+
+        // инициализация карты
+        function init(latitude = 55.753215, longitude = 37.622504, zoom = 14, minZoom = 8, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null) {
+            DG.then(function() {
+                // создаем маленькую иконку
+                smallIcon = DG.icon({ iconUrl: smallIconUrl, iconSize: [20, 20] });
+
+                var bounds = null;
+                if (maxBoundsTopLeftLatitude != null && maxBoundsTopLeftLongitude != null && maxBoundsBottomRightLatitude != null && maxBoundsBottomRighLongitude != null) {
+                    bounds =DG.latLngBounds(DG.latLng(maxBoundsTopLeftLatitude, maxBoundsTopLeftLongitude), DG.latLng(maxBoundsBottomRightLatitude, maxBoundsBottomRighLongitude));
+                } 
+                // создаем карту
+                map = DG.map('map', {
+                    center: DG.latLng(latitude, longitude),
+                    zoomControl: false,
+                    fullscreenControl: false,
+                    zoom: zoom,
+                    setView: false,
+                    minZoom: minZoom,
+                    geoclicker: false,
+                    poi: false,
+                    maxBounds: bounds
+                });
+                // создаем группу для маркеров
+                markers = DG.layerGroup();  
+                markers.addTo(map);
+
+                map.on('zoomend', element => setMarkersByZoomLevel(element.target.zoom));
+                //  сообщаем приложению, что карта загружена
+                onMapLoaded()
+            });
+        }
+
+        function setMarkersByZoomLevel(zoomLevel) {
+            if (zoomLevel < 12) {
+                markerList.forEach(element => element.marker.removeFrom(map));
+                var newMarkerList = [];
+
+                markerList.forEach( function(element) {
+                    var marker = DG.marker(element.marker.getLatLng(), {icon: simpleIcon});
+                                   marker.on('click', function(e) { onMarkerClicked( e.target.id, e.latlng.lat, e.latlng.lng) });
+                    newMarkerList.push({id: element.id, marker: marker});
+                    marker.addTo(map);
+                })
+
+                markerList = newMarkerList;
+            }
+        }
+
+        // инициализация карты для города Москва
+        function initMoscow() {
+            init(55.753215, 37.622504, 14, 8, 57.053422, 35.139385, 54.279764, 40.362835)
+        }
+
+        // увеличение масштаба
+        function zoomIn() {
+            map.zoomIn();
+        }
+        // уменьшение масштаба
+        function zoomOut() {
+            map.zoomOut();
+        }
+
+        // установка масштаба
+        function setZoom(value) {
+            map.setZoom(value);
+        }
+
+        // позиционирование точки в центре карты, с заданнным масштабом
+        function setView(latitude, longitude, zoom) {
+            map.setView({lat: latitude, lng: longitude}, zoom);
+        }
+
+        // добавление иконки
+        function addIcon(id, imageUrl, height, width) {
+            var icon = DG.icon({
+                iconUrl: imageUrl,
+                iconSize: [height, width]
+            });
+            icon.id = id
+            iconList.push(icon)
+        }
+        
+        function _findIcon(id) {
+            return iconList.find(element => element.id == id);
+        }
+
+        // добавление маркера
+        function addMarker(id, iconId, latitude, longitude) {
+            var icon = _findIcon(iconId);
+            if (icon) {
+                // создаем маркер
+                var marker = DG.marker([latitude, longitude], {icon: icon});
+                marker.id = id
+                marker.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
+                // добавляем маркер в группу
+                marker.addTo(markers)
+            }
+        }
+
+        // удаление всех маркеров
+        function removeAllMarkers() {
+            // удаляем группу маркеров с карты
+            markers.removeFrom(map)
+            // удаляем все маркеры из группы
+            markers.clearLayers();
+            // возвращаем уже пустую группу на карту
+            markers.addTo(map);
+        }
+
+        // событие клика по маркеру
+        function onMarkerClicked(id, latitude, longitude) {
+            open('callback://markerClicked?id='+id+'&lat='+latitude+'&lng='+longitude, '_self');
+        }
+
+        // событие окончания загрузки карты
+        function onMapLoaded() {
+            open('callback://mapLoaded', '_self');
+        }
+
+        // событие ошибки загрузки карты
+        function onMapLoadError() {
+            open('callback://mapLoadError', '_self');
+        }
+
+    </script>
+</head>
+<body>
+    <div id="map" style="width:100%; height:100%"></div>
+</body>
+</html>

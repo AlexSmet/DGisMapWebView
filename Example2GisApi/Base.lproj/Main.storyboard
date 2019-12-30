@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,16 +11,79 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example2GisApi" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRd-OG-D2W" customClass="DGisWebView" customModule="Example2GisApi" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="538"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="CNO-Uo-LU8">
+                                <rect key="frame" x="10" y="538" width="300" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcJ-a9-KNk">
+                                        <rect key="frame" x="0.0" y="0.0" width="4" height="30"/>
+                                        <state key="normal" title="+"/>
+                                        <connections>
+                                            <action selector="zoomInClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IpE-t3-jeL"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPB-ur-fZx" userLabel="-">
+                                        <rect key="frame" x="4" y="0.0" width="30" height="30"/>
+                                        <state key="normal" title="-"/>
+                                        <connections>
+                                            <action selector="zoomOutClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BQe-Zi-kT6"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZ2-vx-4az">
+                                        <rect key="frame" x="34" y="0.0" width="61" height="30"/>
+                                        <state key="normal" title="setZoom"/>
+                                        <connections>
+                                            <action selector="setZoomClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bmI-JO-0ub"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2s-pL-Kn5">
+                                        <rect key="frame" x="95" y="0.0" width="82" height="30"/>
+                                        <state key="normal" title="addMarkers"/>
+                                        <connections>
+                                            <action selector="addMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Glt-hq-bJl"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqY-hg-ZXf">
+                                        <rect key="frame" x="177" y="0.0" width="123" height="30"/>
+                                        <state key="normal" title="removeAllMarkers"/>
+                                        <connections>
+                                            <action selector="removeAllMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ILp-9j-H0T"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="Hmi-f9-hHh"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="kaG-Zy-rGi"/>
+                                </constraints>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="CNO-Uo-LU8" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="10" id="7Dp-38-IVQ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CNO-Uo-LU8" secondAttribute="trailing" constant="10" id="BjK-Re-tbw"/>
+                            <constraint firstItem="CNO-Uo-LU8" firstAttribute="top" secondItem="CRd-OG-D2W" secondAttribute="bottom" id="I03-i2-ku1"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="CNO-Uo-LU8" secondAttribute="bottom" id="afB-xh-gfl"/>
+                            <constraint firstItem="CRd-OG-D2W" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="h2F-cH-Un9"/>
+                            <constraint firstItem="CRd-OG-D2W" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ncu-Wm-TGs"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="CRd-OG-D2W" secondAttribute="trailing" id="ohU-05-hm9"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="CRd-OG-D2W" id="Pa5-Lp-RIW"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.875" y="138.38028169014083"/>
         </scene>
     </scenes>
 </document>

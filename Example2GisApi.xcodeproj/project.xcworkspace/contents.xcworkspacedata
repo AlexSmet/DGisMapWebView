@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:Example2GisApi.xcodeproj">
+      location = "group:/Users/alex/Developer/Tests/Example2GisApi/Example2GisApi/DGisMap.html">
+   </FileRef>
+   <FileRef
+      location = "self:">
    </FileRef>
 </Workspace>

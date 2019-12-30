@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MBProgressHUD
 
 class ViewController: UIViewController, DGisWebViewDelegate{
 
@@ -17,13 +18,20 @@ class ViewController: UIViewController, DGisWebViewDelegate{
         super.viewDidLoad()
 
         mapView.delegate = self
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
         mapView.initMap()
+        MBProgressHUD.showAdded(to: view, animated: true)
     }
 
     func mapLoaded() {
         print("2Gis map loaded!")
         addIcons()
         addMarkers()
+        MBProgressHUD.hide(for: view, animated: true)
     }
 
     func mapError(_ errorMessage: String) {

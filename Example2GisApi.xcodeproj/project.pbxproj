@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BFBE2A0AE3B2AC57374AA4C3 /* Pods_Example2GisApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 947D9D08A9258C8E1B947D19 /* Pods_Example2GisApi.framework */; };
 		FAAC381723B9CFE100A23D8E /* DGisMap.html in Resources */ = {isa = PBXBuildFile; fileRef = FAAC381623B9CFE100A23D8E /* DGisMap.html */; };
 		FAE3F9C023B6235C00F6E7BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */; };
 		FAE3F9C423B6235C00F6E7BC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9C323B6235C00F6E7BC /* ViewController.swift */; };
@@ -17,6 +18,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0391BB8FACA9EF1E7D3F7CB0 /* Pods-Example2GisApi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example2GisApi.debug.xcconfig"; path = "Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi.debug.xcconfig"; sourceTree = "<group>"; };
+		947D9D08A9258C8E1B947D19 /* Pods_Example2GisApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example2GisApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CF5CD3ACFA8319173AEA530A /* Pods-Example2GisApi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example2GisApi.release.xcconfig"; path = "Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi.release.xcconfig"; sourceTree = "<group>"; };
 		FAAC381623B9CFE100A23D8E /* DGisMap.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = DGisMap.html; sourceTree = "<group>"; };
 		FAE3F9BC23B6235C00F6E7BC /* Example2GisApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example2GisApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -33,18 +37,39 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFBE2A0AE3B2AC57374AA4C3 /* Pods_Example2GisApi.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2FDB41FF6BA44726E59D44D3 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				0391BB8FACA9EF1E7D3F7CB0 /* Pods-Example2GisApi.debug.xcconfig */,
+				CF5CD3ACFA8319173AEA530A /* Pods-Example2GisApi.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F39EA2440975ABCCED0A019A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				947D9D08A9258C8E1B947D19 /* Pods_Example2GisApi.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		FAE3F9B323B6235C00F6E7BC = {
 			isa = PBXGroup;
 			children = (
 				FAE3F9D323B6237E00F6E7BC /* DGisWebView */,
 				FAE3F9BE23B6235C00F6E7BC /* Example2GisApi */,
 				FAE3F9BD23B6235C00F6E7BC /* Products */,
+				2FDB41FF6BA44726E59D44D3 /* Pods */,
+				F39EA2440975ABCCED0A019A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,9 +110,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = FAE3F9D023B6236300F6E7BC /* Build configuration list for PBXNativeTarget "Example2GisApi" */;
 			buildPhases = (
+				83D281EC60A3EBA4488F0388 /* [CP] Check Pods Manifest.lock */,
 				FAE3F9B823B6235C00F6E7BC /* Sources */,
 				FAE3F9B923B6235C00F6E7BC /* Frameworks */,
 				FAE3F9BA23B6235C00F6E7BC /* Resources */,
+				36F9D71277FFD5E5B40FE0AB /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -144,6 +171,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		36F9D71277FFD5E5B40FE0AB /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		83D281EC60A3EBA4488F0388 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Example2GisApi-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		FAE3F9B823B6235C00F6E7BC /* Sources */ = {
@@ -294,6 +363,7 @@
 		};
 		FAE3F9D123B6236300F6E7BC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0391BB8FACA9EF1E7D3F7CB0 /* Pods-Example2GisApi.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -312,6 +382,7 @@
 		};
 		FAE3F9D223B6236300F6E7BC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF5CD3ACFA8319173AEA530A /* Pods-Example2GisApi.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

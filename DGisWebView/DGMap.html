@@ -11,13 +11,14 @@
         }
     </style>
     <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
+</head>
+<body>
+    <div id="map" style="width:100%; height:100%"></div>
     <script type="text/javascript">
         var iconList = [];
-        var smallIcon;
         var markers;
-        var smallMarkers;
-        var cluster;
-
 
         DG.customConfig = {
             tileServer: '//tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_sd&layerType=nc',
@@ -29,12 +30,13 @@
         // инициализация карты
         function init(latitude = 55.753215, longitude = 37.622504, zoom = 14, minZoom = 8, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null) {
             DG.then(function() {
+                // загрузка кода модуля кластеризации
+                return DG.plugin('https://2gis.github.io/mapsapi/vendors/Leaflet.markerCluster/leaflet.markercluster-src.js');
+            }).then(function() {
                 var bounds = null;
                 if (maxBoundsTopLeftLatitude != null && maxBoundsTopLeftLongitude != null && maxBoundsBottomRightLatitude != null && maxBoundsBottomRighLongitude != null) {
                     bounds =DG.latLngBounds(DG.latLng(maxBoundsTopLeftLatitude, maxBoundsTopLeftLongitude), DG.latLng(maxBoundsBottomRightLatitude, maxBoundsBottomRighLongitude));
                 }
-
-                setSmallIcon("https://img.icons8.com/color/48/000000/filled-circle.png", 20, 20);
 
                 // создаем карту
                 map = DG.map('map', {
@@ -48,40 +50,18 @@
                     poi: false,
                     maxBounds: bounds
                 });
-                map.on('zoomend', element => setMarkersByZoomLevel(element.target._zoom));
                 map.on('load', element => onMapLoaded());
 
                 // создаем группу для маркеров
-                markers = DG.featureGroup();
-                markers.addTo(map); //TODO: Эту строку нужно убрать и при необходимолсти добавить вызов setMarkersByZoomLevel()
-                // добавляем обработчик клика для всех маркеров группы
-                markers.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
-
-                // дополнительная группа для маленьких маркеров
-                smallMarkers = DG.featureGroup();
-                smallMarkers.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
+                markers = DG.markerClusterGroup({
+                    disableClusteringAtZoom: 14,
+                    maxClusterRadius: 40
+                });
+                map.addLayer(markers);
 
                 // позиционируем карту, что бы стрельнуло событие инициализации карты ('load')
-                setView(latitude, longitude, zoom)
+                setView(latitude, longitude, zoom);
             });
-        }
-
-        function setMarkersByZoomLevel(zoomLevel) {
-            if (zoomLevel < 12) {
-                if (map.hasLayer(markers) == true) {
-                    markers.removeFrom(map);
-                }
-                if (map.hasLayer(smallMarkers) == false) {
-                    smallMarkers.addTo(map);
-                }
-            } else {
-                if (map.hasLayer(smallMarkers) == true) {
-                    smallMarkers.removeFrom(map);
-                }
-                if (map.hasLayer(markers) == false) {
-                    markers.addTo(map);
-                }
-            }
         }
 
         // инициализация карты для города Москва
@@ -108,12 +88,6 @@
             map.setView({lat: latitude, lng: longitude}, zoom);
         }
 
-        // установка маленькой иконки которая используется на маленьких масштабах
-        function setSmallIcon(imageUrl, height, width) {
-            // создаем маленькую иконку
-            smallIcon = DG.icon({ iconUrl: imageUrl, iconSize: [height, width] });
-        }
-
         // добавление иконки
         function addIcon(id, imageUrl, height, width) {
             var icon = DG.icon({
@@ -123,7 +97,7 @@
             icon.id = id
             iconList.push(icon)
         }
-        
+
         function _findIcon(id) {
             return iconList.find(element => element.id == id);
         }
@@ -135,24 +109,19 @@
                 // создаем маркер
                 var marker = DG.marker([latitude, longitude], {icon: icon});
                 marker.id = id;
+                // добавляем обработчик клика
+                marker.on('click', function(e) { onMarkerClicked(e.target.id, e.latlng.lat, e.latlng.lng) });
                 // добавляем маркер в группу
                 marker.addTo(markers);
             }
-
-            // добавляем маленький маркер
-            var smallMarker = DG.marker([latitude, longitude], {icon: smallIcon});
-            smallMarker.id = id;
-            smallMarker.addTo(smallMarkers);
         }
 
         // удаление всех маркеров
         function removeAllMarkers() {
             // удаляем группу маркеров с карты
             markers.removeFrom(map)
-            smallMarkers.removeFrom(map);
             // удаляем все маркеры из группы
             markers.clearLayers();
-            smallMarkers.clearLayers();
             // возвращаем уже пустую группу на карту
             setMarkersByZoomLevel(map._zoom)
         }
@@ -173,8 +142,5 @@
         }
 
     </script>
-</head>
-<body>
-    <div id="map" style="width:100%; height:100%"></div>
 </body>
 </html>

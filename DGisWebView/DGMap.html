@@ -41,7 +41,7 @@
                 // создаем карту
                 map = DG.map('map', {
                     //center: DG.latLng(latitude, longitude),
-                    zoomControl: false,
+                    zoomControl: true,
                     fullscreenControl: false,
                     //zoom: zoom,
                     setView: false,
@@ -50,6 +50,7 @@
                     poi: false,
                     maxBounds: bounds
                 });
+                map.zoomControl.setPosition('bottomright')
                 map.on('load', element => onMapLoaded());
 
                 // создаем группу для маркеров
@@ -86,6 +87,7 @@
         // позиционирование точки в центре карты, с заданнным масштабом
         function setView(latitude, longitude, zoom) {
             map.setView({lat: latitude, lng: longitude}, zoom);
+            var userMarker = DG.marker([latitude, longitude]).addTo(map)
         }
 
         // добавление иконки

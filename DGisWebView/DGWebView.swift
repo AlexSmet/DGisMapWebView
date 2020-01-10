@@ -8,9 +8,11 @@
 
 import Foundation
 import WebKit
+import MapKit
 
 public protocol DGWebViewDelegate {
     func mapLoaded() -> Void
+    func mapMoved(zoom: Float, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Void
     func mapError(_ :String) -> Void
     func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
 }
@@ -35,6 +37,7 @@ public class DGWebView: UIView, WKNavigationDelegate {
         webView = WKWebView(frame: bounds, configuration: config)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.navigationDelegate = self
+        webView.customUserAgent = "Mozilla/5.0 (iPad; CPU OS 13_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Mobile/15E148 Safari/604.1"
 
         insertSubview(webView, at: 0)
     }
@@ -135,19 +138,45 @@ public class DGWebView: UIView, WKNavigationDelegate {
             delegate?.mapLoaded()
         case "mapUnavailable":
             delegate?.mapError("Карта недоступна")
+        case "mapMoved":
+            mapMoved(queryItems: queryItems)
         case "markerClicked":
-            if (queryItems?.count ?? 0 > 2), let markerId = queryItems?[0].value, let latitudeString = queryItems?[1].value,  let longitudeString = queryItems?[2].value {
-                if let latitude = Float(latitudeString), let longitude = Float(longitudeString) {
-                    delegate?.markerClicked(markerId, latitude: latitude, longitude: longitude)
-                }
-            }
+            markerClicked(queryItems: queryItems)
         default: break
         }
 
         decisionHandler(.cancel)
     }
 
+    private func mapMoved(queryItems: [URLQueryItem]?) {
+        guard let queryItems = queryItems, queryItems.count == 5 else { return }
+
+        guard let zoomString = queryItems[0].value,
+              let southWestLatString = queryItems[1].value, let southWestLngString = queryItems[2].value,
+              let northEastLatString = queryItems[3].value, let northEastLngString = queryItems[4].value
+            else { return }
+
+        guard let zoom = Float(zoomString),
+              let southWestLat = Double(southWestLatString), let southWestLng = Double(southWestLngString),
+              let northEastLat = Double(northEastLatString), let northEastLng = Double(northEastLngString)
+        else { return }
+
+        delegate?.mapMoved(zoom: zoom, southWest: CLLocationCoordinate2D(latitude: southWestLat, longitude: southWestLng), northEast: CLLocationCoordinate2D(latitude: northEastLat, longitude: northEastLng))
+    }
+
+    private func markerClicked(queryItems: [URLQueryItem]?) {
+        guard let queryItems = queryItems, queryItems.count == 3 else { return }
+        guard let markerId = queryItems[0].value, let latitudeString = queryItems[1].value, let longitudeString = queryItems[2].value else { return }
+        guard let latitude = Float(latitudeString), let longitude = Float(longitudeString) else { return }
+
+        delegate?.markerClicked(markerId, latitude: latitude, longitude: longitude)
+    }
+
     public func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        delegate?.mapError("Ошибка при загрузке карты")
+    }
+
+    public func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
         delegate?.mapError("Ошибка при загрузке карты")
     }
 }

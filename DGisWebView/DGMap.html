@@ -10,7 +10,7 @@
             margin: 0px;
         }
     </style>
-    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
+    <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=basic"></script>
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 </head>
@@ -28,7 +28,7 @@
         };
 
         // инициализация карты
-        function init(latitude = 55.753215, longitude = 37.622504, zoom = 14, minZoom = 8, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null) {
+        function init({latitude, longitude, zoom = 14, minZoom = 8, disableClusteringAtZoom = 14, maxClusterRadius = 80, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null}) {
             DG.then(function() {
                 // загрузка кода модуля кластеризации
                 return DG.plugin('https://2gis.github.io/mapsapi/vendors/Leaflet.markerCluster/leaflet.markercluster-src.js');
@@ -49,14 +49,14 @@
                     geoclicker: false,
                     poi: false,
                     maxBounds: bounds
-                });
+                }).whenReady(onMapLoaded);
                 map.zoomControl.setPosition('bottomright')
-                map.on('load', element => onMapLoaded());
+                map.on('moveend', element => onMapMoveEnd());
 
                 // создаем группу для маркеров
                 markers = DG.markerClusterGroup({
-                    disableClusteringAtZoom: 14,
-                    maxClusterRadius: 40
+                    disableClusteringAtZoom: disableClusteringAtZoom,
+                    maxClusterRadius: maxClusterRadius
                 });
                 map.addLayer(markers);
 
@@ -67,7 +67,7 @@
 
         // инициализация карты для города Москва
         function initMoscow() {
-            init(55.753215, 37.622504, 14, 8, 57.053422, 35.139385, 54.279764, 40.362835)
+            init({ latitude: 55.753215, longitude: 37.622504, zoom: 14, minZoom: 8, disableClusteringAtZoom: 14, maxClusterRadius: 40, maxBoundsTopLeftLatitude: 57.053422, maxBoundsTopLeftLongitude: 35.139385, maxBoundsBottomRightLatitude: 54.279764, maxBoundsBottomRighLongitude: 40.362835})
         }
 
         // увеличение масштаба
@@ -87,7 +87,6 @@
         // позиционирование точки в центре карты, с заданнным масштабом
         function setView(latitude, longitude, zoom) {
             map.setView({lat: latitude, lng: longitude}, zoom);
-            var userMarker = DG.marker([latitude, longitude]).addTo(map)
         }
 
         // добавление иконки
@@ -121,11 +120,11 @@
         // удаление всех маркеров
         function removeAllMarkers() {
             // удаляем группу маркеров с карты
-            markers.removeFrom(map)
+            markers.removeFrom(map);
             // удаляем все маркеры из группы
             markers.clearLayers();
             // возвращаем уже пустую группу на карту
-            setMarkersByZoomLevel(map._zoom)
+            map.addLayer(markers);
         }
 
         // событие клика по маркеру
@@ -141,6 +140,16 @@
         // событие ошибки загрузки карты
         function onMapLoadError() {
             open('callback://mapLoadError', '_self');
+        }
+
+        // событие перемещения карты, в том числе и изменение масштаба
+        function onMapMoveEnd() {
+            var bounds = map.getBounds()
+            open('callback://mapMoved?zoom=' + map._zoom +
+                 '&southWestLat=' + bounds._southWest.lat +
+                 '&southWestLng=' + bounds._southWest.lng +
+                 '&northEastLat=' + bounds._northEast.lat +
+                 '&northEastLng='  +bounds._northEast.lng, '_self');
         }
 
     </script>

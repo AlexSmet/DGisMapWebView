@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import MapKit
 import MBProgressHUD
 
 class ViewController: UIViewController, DGWebViewDelegate{
-
 
     @IBOutlet weak var mapView: DGWebView!
 
@@ -27,11 +27,18 @@ class ViewController: UIViewController, DGWebViewDelegate{
         mapView.initMap()
     }
 
+    // MARK: - События карты
+
     func mapLoaded() {
         print("2Gis map loaded!")
         addIcons()
         addMarkers()
+        mapView.setHome(latitude: 55.753215, longitude: 37.622504)
         MBProgressHUD.hide(for: view, animated: true)
+    }
+
+    func mapMoved(zoom: Float, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        print("Map was moved! zoom=\(zoom), southWest=\(southWest), northEast=\(northEast)")
     }
 
     func mapError(_ errorMessage: String) {
@@ -45,6 +52,8 @@ class ViewController: UIViewController, DGWebViewDelegate{
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+
+    // MARK: -  Добавление маркеров
 
     private func addIcons() {
         mapView.addIcon(id: "0", imageUrl: "https://img.icons8.com/flat_round/64/000000/salamander--v1.png", height: 30, width: 30)
@@ -60,18 +69,26 @@ class ViewController: UIViewController, DGWebViewDelegate{
     }
 
     private func addMarkers() {
-        for i in 0..<200 {
-            let lat = Float.random(in: 55.71...55.78)
-            let lng = Float.random(in: 37.5...37.7)
-            mapView.addMarker(id: "\(i)", iconId: "\(i%10)", latitude: lat, longitude: lng)
+        MBProgressHUD.showAdded(to: view, animated: true)
+
+        DispatchQueue.main.async {
+             for i in 0..<1000 {
+                 let lat = Float.random(in: 55.7...55.8)
+                 let lng = Float.random(in: 37.4...37.8)
+                 self.mapView.addMarker(id: "\(i)", iconId: "\(i%10)", latitude: lat, longitude: lng)
+             }
+             self.mapView.addMarker(id: "1", iconId: "0", latitude: 55.756111, longitude: 37.625420)
+             self.mapView.addMarker(id: "2", iconId: "0", latitude: 55.753570, longitude: 37.632286)
+             self.mapView.addMarker(id: "3", iconId: "1", latitude: 55.738538, longitude: 37.633853)
+             self.mapView.addMarker(id: "4", iconId: "1", latitude: 55.743089, longitude: 37.561240)
+             self.mapView.addMarker(id: "5", iconId: "9", latitude: 55.722845, longitude: 37.621493)
+             self.mapView.addMarker(id: "6", iconId: "9", latitude: 55.738683, longitude: 37.578835)
+
+            MBProgressHUD.hide(for: self.view, animated: true)
         }
-        mapView.addMarker(id: "1", iconId: "0", latitude: 55.756111, longitude: 37.625420)
-        mapView.addMarker(id: "2", iconId: "0", latitude: 55.753570, longitude: 37.632286)
-        mapView.addMarker(id: "3", iconId: "1", latitude: 55.738538, longitude: 37.633853)
-        mapView.addMarker(id: "4", iconId: "1", latitude: 55.743089, longitude: 37.561240)
-        mapView.addMarker(id: "5", iconId: "9", latitude: 55.722845, longitude: 37.621493)
-        mapView.addMarker(id: "6", iconId: "9", latitude: 55.738683, longitude: 37.578835)
     }
+
+    // MARK: - Пользовательские действия
 
     @IBAction func zoomInClick(_ sender: UIButton) {
         mapView.zoomIn()

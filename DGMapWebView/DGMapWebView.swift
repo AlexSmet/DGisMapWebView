@@ -1,5 +1,5 @@
 //
-//  DGWebView.swift
+//  DGMapWebView.swift
 //
 //
 //  Created by Aleksandr Smetannikov on 27/12/2019.
@@ -15,7 +15,7 @@ public struct MapBounds {
     var northEast: CLLocationCoordinate2D
 }
 
-public protocol DGWebViewDelegate {
+public protocol DGMapWebViewDelegate {
     /// Карта загружена
     func mapLoaded() -> Void
     /// Ошибка при загрузке карты
@@ -26,10 +26,10 @@ public protocol DGWebViewDelegate {
     func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
 }
 
-public class DGWebView: UIView, WKNavigationDelegate {
+public class DGMapWebView: UIView, WKNavigationDelegate {
     private var webView: WKWebView!
 
-    public var delegate: DGWebViewDelegate?
+    public var delegate: DGMapWebViewDelegate?
 
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -55,7 +55,7 @@ public class DGWebView: UIView, WKNavigationDelegate {
 
     /// Инициализация карты
     public func initMap() {
-        let bundle = Bundle(for: DGWebView.self)
+        let bundle = Bundle(for: DGMapWebView.self)
         guard let fileUrl = bundle.url(forResource: "DGMap", withExtension: "html") else {
             delegate?.mapError("Ошибка при загрузке карты: нет доступа к ресурсам")
             return

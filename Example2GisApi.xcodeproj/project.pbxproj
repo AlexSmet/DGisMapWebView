@@ -14,7 +14,7 @@
 		FAE3F9C723B6235C00F6E7BC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE3F9C523B6235C00F6E7BC /* Main.storyboard */; };
 		FAE3F9C923B6236300F6E7BC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FAE3F9C823B6236300F6E7BC /* Assets.xcassets */; };
 		FAE3F9CC23B6236300F6E7BC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FAE3F9CA23B6236300F6E7BC /* LaunchScreen.storyboard */; };
-		FAE3F9D523B6248300F6E7BC /* DGWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9D423B6248300F6E7BC /* DGWebView.swift */; };
+		FAE3F9D523B6248300F6E7BC /* DGMapWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9D423B6248300F6E7BC /* DGMapWebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +29,7 @@
 		FAE3F9C823B6236300F6E7BC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FAE3F9CB23B6236300F6E7BC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FAE3F9CD23B6236300F6E7BC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FAE3F9D423B6248300F6E7BC /* DGWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGWebView.swift; sourceTree = "<group>"; };
+		FAE3F9D423B6248300F6E7BC /* DGMapWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DGMapWebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +64,8 @@
 		FAE3F9B323B6235C00F6E7BC = {
 			isa = PBXGroup;
 			children = (
-				FAE3F9D323B6237E00F6E7BC /* DGisWebView */,
-				FAE3F9BE23B6235C00F6E7BC /* Example2GisApi */,
+				FAE3F9D323B6237E00F6E7BC /* DGMapWebView */,
+				FAE3F9BE23B6235C00F6E7BC /* Example */,
 				FAE3F9BD23B6235C00F6E7BC /* Products */,
 				2FDB41FF6BA44726E59D44D3 /* Pods */,
 				F39EA2440975ABCCED0A019A /* Frameworks */,
@@ -80,7 +80,7 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FAE3F9BE23B6235C00F6E7BC /* Example2GisApi */ = {
+		FAE3F9BE23B6235C00F6E7BC /* Example */ = {
 			isa = PBXGroup;
 			children = (
 				FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */,
@@ -90,16 +90,16 @@
 				FAE3F9CA23B6236300F6E7BC /* LaunchScreen.storyboard */,
 				FAE3F9CD23B6236300F6E7BC /* Info.plist */,
 			);
-			path = Example2GisApi;
+			path = Example;
 			sourceTree = "<group>";
 		};
-		FAE3F9D323B6237E00F6E7BC /* DGisWebView */ = {
+		FAE3F9D323B6237E00F6E7BC /* DGMapWebView */ = {
 			isa = PBXGroup;
 			children = (
-				FAE3F9D423B6248300F6E7BC /* DGWebView.swift */,
+				FAE3F9D423B6248300F6E7BC /* DGMapWebView.swift */,
 				FAAC381623B9CFE100A23D8E /* DGMap.html */,
 			);
-			path = DGisWebView;
+			path = DGMapWebView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -220,7 +220,7 @@
 			files = (
 				FAE3F9C423B6235C00F6E7BC /* ViewController.swift in Sources */,
 				FAE3F9C023B6235C00F6E7BC /* AppDelegate.swift in Sources */,
-				FAE3F9D523B6248300F6E7BC /* DGWebView.swift in Sources */,
+				FAE3F9D523B6248300F6E7BC /* DGMapWebView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,7 +366,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Example2GisApi/Info.plist;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -385,7 +386,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				INFOPLIST_FILE = Example2GisApi/Info.plist;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = Example/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

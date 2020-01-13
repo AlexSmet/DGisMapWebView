@@ -10,9 +10,9 @@ import UIKit
 import MapKit
 import MBProgressHUD
 
-class ViewController: UIViewController, DGWebViewDelegate{
+class ViewController: UIViewController, DGMapWebViewDelegate{
 
-    @IBOutlet weak var mapView: DGWebView!
+    @IBOutlet weak var mapView: DGMapWebView!
 
     override func viewDidLoad() {
         super.viewDidLoad()

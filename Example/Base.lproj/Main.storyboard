@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
-    <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,53 +11,53 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Example2GisApi" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRd-OG-D2W" customClass="DGWebView" customModule="Example2GisApi" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="408"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRd-OG-D2W" customClass="DGMapWebView" customModule="Example2GisApi" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="440"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="CNO-Uo-LU8">
-                                <rect key="frame" x="10" y="408" width="300" height="160"/>
+                                <rect key="frame" x="10" y="440" width="580" height="160"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcJ-a9-KNk">
-                                        <rect key="frame" x="0.0" y="0.0" width="300" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="580" height="26.5"/>
                                         <state key="normal" title="+"/>
                                         <connections>
                                             <action selector="zoomInClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IpE-t3-jeL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPB-ur-fZx" userLabel="-">
-                                        <rect key="frame" x="0.0" y="26.5" width="300" height="27"/>
+                                        <rect key="frame" x="0.0" y="26.5" width="580" height="27"/>
                                         <state key="normal" title="-"/>
                                         <connections>
                                             <action selector="zoomOutClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BQe-Zi-kT6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZ2-vx-4az">
-                                        <rect key="frame" x="0.0" y="53.5" width="300" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="53.5" width="580" height="26.5"/>
                                         <state key="normal" title="setZoom 15"/>
                                         <connections>
                                             <action selector="setZoomClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bmI-JO-0ub"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2s-pL-Kn5">
-                                        <rect key="frame" x="0.0" y="80" width="300" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="80" width="580" height="26.5"/>
                                         <state key="normal" title="addMarkers"/>
                                         <connections>
                                             <action selector="addMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Glt-hq-bJl"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqY-hg-ZXf">
-                                        <rect key="frame" x="0.0" y="106.5" width="300" height="27"/>
+                                        <rect key="frame" x="0.0" y="106.5" width="580" height="27"/>
                                         <state key="normal" title="removeAllMarkers"/>
                                         <connections>
                                             <action selector="removeAllMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ILp-9j-H0T"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCU-wv-6M4">
-                                        <rect key="frame" x="0.0" y="133.5" width="300" height="26.5"/>
+                                        <rect key="frame" x="0.0" y="133.5" width="580" height="26.5"/>
                                         <state key="normal" title="getBounds"/>
                                         <connections>
                                             <action selector="getBoundsClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KmJ-Jb-v0a"/>

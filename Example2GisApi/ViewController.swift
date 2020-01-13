@@ -37,7 +37,7 @@ class ViewController: UIViewController, DGWebViewDelegate{
         MBProgressHUD.hide(for: view, animated: true)
     }
 
-    func mapMoved(zoom: Float, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+    func mapMoved(zoom: Int, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
         print("Map was moved! zoom=\(zoom), southWest=\(southWest), northEast=\(northEast)")
     }
 
@@ -108,6 +108,24 @@ class ViewController: UIViewController, DGWebViewDelegate{
 
     @IBAction func removeAllMarkersClick(_ sender: UIButton) {
         mapView.removeAllMarkers()
+    }
+
+    @IBAction func getBoundsClick(_ sender: UIButton) {
+        mapView.getZoom {
+            if let zoom = $0 {
+                print("map zoom = \(zoom)")
+            } else {
+                print("map zoom unavailable")
+            }
+        }
+
+        mapView.getBounds { (southWest, northEast) in
+            if let southWest = southWest, let northEast = northEast {
+                print("map bounds: \(southWest), \(northEast)")
+            } else {
+                print("map bounds unavailable")
+            }
+        }
     }
 }
 

@@ -27,7 +27,7 @@
             retinaPoiMetaServer: '//tile{s}.maps.2gis.com/poi?x={x}&y={y}&z={z}&v=1&ts=online_hd&layerType=nc'
         };
 
-        // инициализация карты
+        /// инициализация карты
         function init({latitude, longitude, zoom = 14, minZoom = 8, disableClusteringAtZoom = 14, maxClusterRadius = 80, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null}) {
             DG.then(function() {
                 // загрузка кода модуля кластеризации
@@ -65,23 +65,39 @@
             });
         }
 
-        // инициализация карты для города Москва
+        /// инициализация карты для города Москва
         function initMoscow() {
             init({ latitude: 55.753215, longitude: 37.622504, zoom: 14, minZoom: 8, disableClusteringAtZoom: 14, maxClusterRadius: 40, maxBoundsTopLeftLatitude: 57.053422, maxBoundsTopLeftLongitude: 35.139385, maxBoundsBottomRightLatitude: 54.279764, maxBoundsBottomRighLongitude: 40.362835})
         }
 
-        // увеличение масштаба
+        /// увеличение масштаба
         function zoomIn() {
             map.zoomIn();
         }
-        // уменьшение масштаба
+        /// уменьшение масштаба
         function zoomOut() {
             map.zoomOut();
         }
 
-        // установка масштаба
+        /// установка масштаба
         function setZoom(value) {
             map.setZoom(value);
+        }
+
+        /// получение текущего масштаба карты
+        function getZoom() {
+            return map._zoom;
+        }
+
+        /// получение отображаемых границ карты
+        function getBounds() {
+            var bounds = map.getBounds();
+            return [
+                bounds._southWest.lat,
+                bounds._southWest.lng,
+                bounds._northEast.lat,
+                bounds._northEast.lng
+            ];
         }
 
         // позиционирование точки в центре карты, с заданнным масштабом
@@ -145,11 +161,11 @@
         // событие перемещения карты, в том числе и изменение масштаба
         function onMapMoveEnd() {
             var bounds = map.getBounds()
-            open('callback://mapMoved?zoom=' + map._zoom +
+            open('callback://mapMoved?zoom=' + Math.trunc(map._zoom) +
                  '&southWestLat=' + bounds._southWest.lat +
                  '&southWestLng=' + bounds._southWest.lng +
                  '&northEastLat=' + bounds._northEast.lat +
-                 '&northEastLng='  +bounds._northEast.lng, '_self');
+                 '&northEastLng=' + bounds._northEast.lng, '_self');
         }
 
     </script>

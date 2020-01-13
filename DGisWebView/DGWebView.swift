@@ -11,9 +11,13 @@ import WebKit
 import MapKit
 
 public protocol DGWebViewDelegate {
+    /// Карта загружена
     func mapLoaded() -> Void
-    func mapMoved(zoom: Float, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Void
+    /// Ошибка при загрузке карты
     func mapError(_ :String) -> Void
+    /// Карта была перемещена или был изменен масштаб
+    func mapMoved(zoom: Int, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Void
+    /// Маркер был выбран
     func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
 }
 
@@ -56,16 +60,45 @@ public class DGWebView: UIView, WKNavigationDelegate {
         webView.load(urlRequest)
     }
 
+    /// увеличение масштаба
     public func zoomIn() {
         webView.evaluateJavaScript("zoomIn()")
     }
 
+    /// уменьшение масштаба
     public func zoomOut() {
         webView.evaluateJavaScript("zoomOut()")
     }
 
+    /// установка заданного масштаба
     public func setZoom(_ value: Int) {
         webView.evaluateJavaScript("setZoom(\(value))")
+    }
+
+    /// получение текущего масштаба карты
+    public func getZoom(completion: @escaping (Int?) -> Void) {
+        webView.evaluateJavaScript("getZoom()") { (result, error) in
+            guard let result = result as? NSNumber else {
+                completion(nil)
+                return
+            }
+
+            let zoom = Int(truncating: result)
+            completion(zoom)
+        }
+    }
+
+    /// получение текущих границ карты
+    public func getBounds(completion: @escaping (_ southWest: CLLocationCoordinate2D?, _ northEast: CLLocationCoordinate2D?) -> Void) {
+        webView.evaluateJavaScript("getBounds()") { (result, error) in
+            guard let result = result as? [NSNumber], result.count == 4 else {
+                completion(nil, nil)
+                return
+            }
+
+            completion(CLLocationCoordinate2D(latitude: Double(truncating: result[0]), longitude: Double(truncating: result[1])),
+                       CLLocationCoordinate2D(latitude: Double(truncating: result[2]), longitude: Double(truncating: result[3])))
+        }
     }
 
     /// Позиционирование с центром в указанных координатах
@@ -74,6 +107,15 @@ public class DGWebView: UIView, WKNavigationDelegate {
             webView.evaluateJavaScript("setView(\(latitude), \(longitude), \(zoom))")
         } else {
             webView.evaluateJavaScript("setView(\(latitude), \(longitude))")
+        }
+    }
+
+    /// Позиционирование маркера "Дом" в центре карты
+    public func setHome(latitude: Float, longitude: Float, zoom: Int? = nil) {
+        if let zoom = zoom {
+            webView.evaluateJavaScript("setHome(\(latitude), \(longitude), \(zoom))")
+        } else {
+            webView.evaluateJavaScript("setHome(\(latitude), \(longitude))")
         }
     }
 
@@ -156,7 +198,7 @@ public class DGWebView: UIView, WKNavigationDelegate {
               let northEastLatString = queryItems[3].value, let northEastLngString = queryItems[4].value
             else { return }
 
-        guard let zoom = Float(zoomString),
+        guard let zoom = Int(zoomString),
               let southWestLat = Double(southWestLatString), let southWestLng = Double(southWestLngString),
               let northEastLat = Double(northEastLatString), let northEastLng = Double(northEastLngString)
         else { return }

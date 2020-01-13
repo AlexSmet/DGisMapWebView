@@ -17,51 +17,57 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CRd-OG-D2W" customClass="DGWebView" customModule="Example2GisApi" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="538"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="408"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" translatesAutoresizingMaskIntoConstraints="NO" id="CNO-Uo-LU8">
-                                <rect key="frame" x="10" y="538" width="300" height="30"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="CNO-Uo-LU8">
+                                <rect key="frame" x="10" y="408" width="300" height="160"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tcJ-a9-KNk">
-                                        <rect key="frame" x="0.0" y="0.0" width="4" height="30"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="300" height="26.5"/>
                                         <state key="normal" title="+"/>
                                         <connections>
                                             <action selector="zoomInClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="IpE-t3-jeL"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UPB-ur-fZx" userLabel="-">
-                                        <rect key="frame" x="4" y="0.0" width="30" height="30"/>
+                                        <rect key="frame" x="0.0" y="26.5" width="300" height="27"/>
                                         <state key="normal" title="-"/>
                                         <connections>
                                             <action selector="zoomOutClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="BQe-Zi-kT6"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AZ2-vx-4az">
-                                        <rect key="frame" x="34" y="0.0" width="61" height="30"/>
-                                        <state key="normal" title="setZoom"/>
+                                        <rect key="frame" x="0.0" y="53.5" width="300" height="26.5"/>
+                                        <state key="normal" title="setZoom 15"/>
                                         <connections>
                                             <action selector="setZoomClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bmI-JO-0ub"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2s-pL-Kn5">
-                                        <rect key="frame" x="95" y="0.0" width="82" height="30"/>
+                                        <rect key="frame" x="0.0" y="80" width="300" height="26.5"/>
                                         <state key="normal" title="addMarkers"/>
                                         <connections>
                                             <action selector="addMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Glt-hq-bJl"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KqY-hg-ZXf">
-                                        <rect key="frame" x="177" y="0.0" width="123" height="30"/>
+                                        <rect key="frame" x="0.0" y="106.5" width="300" height="27"/>
                                         <state key="normal" title="removeAllMarkers"/>
                                         <connections>
                                             <action selector="removeAllMarkersClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ILp-9j-H0T"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aCU-wv-6M4">
+                                        <rect key="frame" x="0.0" y="133.5" width="300" height="26.5"/>
+                                        <state key="normal" title="getBounds"/>
+                                        <connections>
+                                            <action selector="getBoundsClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KmJ-Jb-v0a"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Hmi-f9-hHh"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="kaG-Zy-rGi"/>
+                                    <constraint firstAttribute="height" constant="160" id="Hmi-f9-hHh"/>
                                 </constraints>
                             </stackView>
                         </subviews>

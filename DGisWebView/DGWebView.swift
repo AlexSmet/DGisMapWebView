@@ -10,13 +10,18 @@ import Foundation
 import WebKit
 import MapKit
 
+public struct MapBounds {
+    var southWest: CLLocationCoordinate2D
+    var northEast: CLLocationCoordinate2D
+}
+
 public protocol DGWebViewDelegate {
     /// Карта загружена
     func mapLoaded() -> Void
     /// Ошибка при загрузке карты
     func mapError(_ :String) -> Void
     /// Карта была перемещена или был изменен масштаб
-    func mapMoved(zoom: Int, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) -> Void
+    func mapMoved(zoom: Int, bounds: MapBounds) -> Void
     /// Маркер был выбран
     func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
 }
@@ -89,15 +94,16 @@ public class DGWebView: UIView, WKNavigationDelegate {
     }
 
     /// получение текущих границ карты
-    public func getBounds(completion: @escaping (_ southWest: CLLocationCoordinate2D?, _ northEast: CLLocationCoordinate2D?) -> Void) {
+    public func getBounds(completion: @escaping (_: MapBounds?) -> Void) {
         webView.evaluateJavaScript("getBounds()") { (result, error) in
             guard let result = result as? [NSNumber], result.count == 4 else {
-                completion(nil, nil)
+                completion(nil)
                 return
             }
 
-            completion(CLLocationCoordinate2D(latitude: Double(truncating: result[0]), longitude: Double(truncating: result[1])),
-                       CLLocationCoordinate2D(latitude: Double(truncating: result[2]), longitude: Double(truncating: result[3])))
+            let mapBounds = MapBounds(southWest: CLLocationCoordinate2D(latitude: Double(truncating: result[0]), longitude: Double(truncating: result[1])),
+                                                northEast: CLLocationCoordinate2D(latitude: Double(truncating: result[2]), longitude: Double(truncating: result[3])))
+            completion(mapBounds)
         }
     }
 
@@ -203,7 +209,9 @@ public class DGWebView: UIView, WKNavigationDelegate {
               let northEastLat = Double(northEastLatString), let northEastLng = Double(northEastLngString)
         else { return }
 
-        delegate?.mapMoved(zoom: zoom, southWest: CLLocationCoordinate2D(latitude: southWestLat, longitude: southWestLng), northEast: CLLocationCoordinate2D(latitude: northEastLat, longitude: northEastLng))
+        let mapBounds = MapBounds(southWest: CLLocationCoordinate2D(latitude: southWestLat, longitude: southWestLng),
+                                  northEast: CLLocationCoordinate2D(latitude: northEastLat, longitude: northEastLng))
+        delegate?.mapMoved(zoom: zoom, bounds: mapBounds)
     }
 
     private func markerClicked(queryItems: [URLQueryItem]?) {

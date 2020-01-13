@@ -37,13 +37,13 @@ class ViewController: UIViewController, DGWebViewDelegate{
         MBProgressHUD.hide(for: view, animated: true)
     }
 
-    func mapMoved(zoom: Int, southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
-        print("Map was moved! zoom=\(zoom), southWest=\(southWest), northEast=\(northEast)")
-    }
-
     func mapError(_ errorMessage: String) {
         MBProgressHUD.hide(for: view, animated: true)
         print("2Gis map error: \(errorMessage)")
+    }
+
+    func mapMoved(zoom: Int, bounds mapBounds: MapBounds) {
+        print("Map was moved! zoom = \(zoom), bounds = \(mapBounds)")
     }
 
     func markerClicked(_ id: String, latitude: Float, longitude: Float) {
@@ -119,9 +119,9 @@ class ViewController: UIViewController, DGWebViewDelegate{
             }
         }
 
-        mapView.getBounds { (southWest, northEast) in
-            if let southWest = southWest, let northEast = northEast {
-                print("map bounds: \(southWest), \(northEast)")
+        mapView.getBounds { mapBounds in
+            if let mapBounds = mapBounds {
+                print("map bounds = \(mapBounds)")
             } else {
                 print("map bounds unavailable")
             }

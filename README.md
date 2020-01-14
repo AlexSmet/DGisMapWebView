@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 # DGisMapWebView
-Swift API for 2Gis maps via WKWebView and JavaScript
+Swift API for [2Gis maps](http://info.2gis.com/index_en.html) via WKWebView and JavaScript
 ```diff
 ! The code is under development !
 ```

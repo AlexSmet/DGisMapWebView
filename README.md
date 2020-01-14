@@ -22,3 +22,5 @@ To use the example project, clone the repo and execute `pod install` in the proj
 
 ## Author
 Created by Alexander Smetannikov (alexsmetdev@gmail.com)
+## Links
+In example project has used [icons by Icons8](https://icons8.com/icons)

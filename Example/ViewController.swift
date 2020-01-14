@@ -24,7 +24,19 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
         super.viewDidAppear(animated)
         
         MBProgressHUD.showAdded(to: view, animated: true)
-        mapView.initMap()
+        // init map for Moscow city
+        let maxBounds = MapBounds(topLeft: CLLocationCoordinate2D(latitude: 57.053422, longitude: 35.139385),
+                                  bottomRight: CLLocationCoordinate2D(latitude: 54.279764, longitude: 40.362835))
+
+        mapView.loadMap(
+            latitude: 55.753215,
+            longitude: 37.622504,
+            zoom: 14,
+            minZoom: 8,
+            disableClusteringAtZoom: 14,
+            maxClusterRadius: 40,
+            maxBounds: maxBounds
+        )
     }
 
     // MARK: - События карты

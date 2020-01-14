@@ -13,6 +13,24 @@ import MapKit
 public struct MapBounds {
     var southWest: CLLocationCoordinate2D
     var northEast: CLLocationCoordinate2D
+
+    init(southWest: CLLocationCoordinate2D, northEast: CLLocationCoordinate2D) {
+        self.southWest = southWest
+        self.northEast = northEast
+    }
+
+    init(topLeft: CLLocationCoordinate2D, bottomRight: CLLocationCoordinate2D) {
+        self.southWest = CLLocationCoordinate2D(latitude: topLeft.latitude, longitude: bottomRight.longitude)
+        self.northEast = CLLocationCoordinate2D(latitude: bottomRight.latitude, longitude: topLeft.longitude)
+    }
+
+    var topLeft: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: southWest.latitude, longitude: northEast.longitude)
+    }
+
+    var bottomRight: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: northEast.latitude, longitude: southWest.longitude)
+    }
 }
 
 public protocol DGMapWebViewDelegate {
@@ -31,6 +49,14 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
 
     public var delegate: DGMapWebViewDelegate?
 
+    private var initLatitude: Double!
+    private var initLongitude: Double!
+    private var initZoom: Int!
+    private var minZoom: Int!
+    private var disableClusteringAtZoom: Int!
+    private var maxClusterRadius: Int!
+    private var maxBounds: MapBounds?
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
         initialize()
@@ -46,7 +72,6 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         webView = WKWebView(frame: bounds, configuration: config)
         webView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         webView.navigationDelegate = self
-        webView.customUserAgent = "Mozilla/5.0 (iPad; CPU OS 13_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Mobile/15E148 Safari/604.1"
 
         insertSubview(webView, at: 0)
     }
@@ -54,7 +79,15 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
     // MARK: - Методы управления картой
 
     /// Инициализация карты
-    public func initMap() {
+    public func loadMap(latitude: Double, longitude: Double, zoom: Int = 14, minZoom: Int = 8, disableClusteringAtZoom: Int = 14, maxClusterRadius: Int = 80, maxBounds: MapBounds? = nil) {
+        self.initLatitude = latitude
+        self.initLongitude = longitude
+        self.initZoom = zoom
+        self.minZoom = minZoom
+        self.disableClusteringAtZoom = disableClusteringAtZoom
+        self.maxClusterRadius = maxClusterRadius
+        self.maxBounds = maxBounds
+
         let bundle = Bundle(for: DGMapWebView.self)
         guard let fileUrl = bundle.url(forResource: "DGMap", withExtension: "html") else {
             delegate?.mapError("Ошибка при загрузке карты: нет доступа к ресурсам")
@@ -150,9 +183,21 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         webView.evaluateJavaScript("removeAllMarkers()")
     }
 
-
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        webView.evaluateJavaScript("initMoscow()")
+        initMap()
+    }
+
+    private func initMap() {
+        let mainParams = "latitude: \(initLatitude!), longitude: \(initLongitude!), zoom: \(initZoom!), minZoom: \(minZoom!), disableClusteringAtZoom: \(disableClusteringAtZoom!), maxClusterRadius: \(maxClusterRadius!)"
+
+        var maxBoundsParams: String?
+        if let maxBounds = maxBounds {
+            maxBoundsParams = ", maxBoundsTopLeftLatitude: \(maxBounds.topLeft.latitude), maxBoundsTopLeftLongitude: \(maxBounds.topLeft.longitude), maxBoundsBottomRightLatitude: \(maxBounds.bottomRight.latitude), maxBoundsBottomRighLongitude: \(maxBounds.bottomRight.longitude)"
+        }
+
+        let js = String(format:"init({%@%@})", mainParams, maxBoundsParams ?? "")
+
+        webView.evaluateJavaScript(js)
     }
 
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {

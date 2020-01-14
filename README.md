@@ -3,7 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](http://opensource.org/licenses/MIT)
 
 # DGisMapWebView
-Swift API for 2Gis maps via WKWebView and JavaScript
+Swift API for [2Gis maps](http://info.2gis.com/index_en.html) via WKWebView and JavaScript
 ```diff
 ! The code is under development !
 ```
@@ -22,3 +22,5 @@ To use the example project, clone the repo and execute `pod install` in the proj
 
 ## Author
 Created by Alexander Smetannikov (alexsmetdev@gmail.com)
+## Links
+In example project has used [icons by Icons8](https://icons8.com/icons)

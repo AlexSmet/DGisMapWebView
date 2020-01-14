@@ -100,12 +100,12 @@
             ];
         }
 
-        // позиционирование точки в центре карты, с заданнным масштабом
+        /// позиционирование точки в центре карты, с заданнным масштабом
         function setView(latitude, longitude, zoom) {
             map.setView({lat: latitude, lng: longitude}, zoom);
         }
 
-        // добавление иконки
+        /// добавление иконки
         function addIcon(id, imageUrl, height, width) {
             var icon = DG.icon({
                 iconUrl: imageUrl,
@@ -119,7 +119,7 @@
             return iconList.find(element => element.id == id);
         }
 
-        // добавление маркера
+        /// добавление маркера
         function addMarker(id, iconId, latitude, longitude) {
             var icon = _findIcon(iconId);
             if (icon) {
@@ -133,7 +133,7 @@
             }
         }
 
-        // удаление всех маркеров
+        /// удаление всех маркеров
         function removeAllMarkers() {
             // удаляем группу маркеров с карты
             markers.removeFrom(map);
@@ -143,22 +143,22 @@
             map.addLayer(markers);
         }
 
-        // событие клика по маркеру
+        /// событие клика по маркеру
         function onMarkerClicked(id, latitude, longitude) {
             open('callback://markerClicked?id='+id+'&lat='+latitude+'&lng='+longitude, '_self');
         }
 
-        // событие окончания загрузки карты
+        /// событие окончания загрузки карты
         function onMapLoaded() {
             open('callback://mapLoaded', '_self');
         }
 
-        // событие ошибки загрузки карты
+        /// событие ошибки загрузки карты
         function onMapLoadError() {
             open('callback://mapLoadError', '_self');
         }
 
-        // событие перемещения карты, в том числе и изменение масштаба
+        /// событие перемещения карты, в том числе и изменение масштаба
         function onMapMoveEnd() {
             var bounds = map.getBounds()
             open('callback://mapMoved?zoom=' + Math.trunc(map._zoom) +

@@ -19,6 +19,8 @@
     <script type="text/javascript">
         var iconList = [];
         var markers;
+        var homeMarker;
+        var userLocationMarker;
 
         DG.customConfig = {
             tileServer: '//tile{s}.maps.2gis.com/tiles?x={x}&y={y}&z={z}&v=1&ts=online_sd&layerType=nc',
@@ -32,6 +34,9 @@
             DG.then(function() {
                 // загрузка кода модуля кластеризации
                 return DG.plugin('https://2gis.github.io/mapsapi/vendors/Leaflet.markerCluster/leaflet.markercluster-src.js');
+            }).then(function() {
+                // загрузка кода модуля для плавного перемещения маркера
+                return DG.plugin('https://unpkg.com/leaflet.marker.slideto@0.2.0/Leaflet.Marker.SlideTo.js');
             }).then(function() {
                 var bounds = null;
                 if (maxBoundsTopLeftLatitude != null && maxBoundsTopLeftLongitude != null && maxBoundsBottomRightLatitude != null && maxBoundsBottomRighLongitude != null) {
@@ -105,6 +110,48 @@
             map.setView({lat: latitude, lng: longitude}, zoom);
         }
 
+        /// добавление маркера Дом
+        function showHomeMarker(iconId, latitude, longitude) {
+            removeHomeMarker();
+
+            var icon = _findIcon(iconId);
+            if (icon) {
+               homeMarker =  DG.marker([latitude, longitude], {icon: icon, zIndexOffset: 900}).addTo(map);
+            }
+        }
+
+        /// удаление маркера Дом
+        function removeHomeMarker() {
+            if (homeMarker) {
+                homeMarker.remove();
+                homeMarker = undefined;
+            }
+        }
+
+        /// добавление маркера положения пользователя
+        function showUserLocationMarker(iconId, latitude, longitude) {
+            removeUserLocationMarker();
+
+            var icon = _findIcon(iconId);
+            if (icon) {
+                userLocationMarker = DG.marker([latitude, longitude], {icon: icon, zIndexOffset: 1000}).addTo(map);
+                setView(latitude, longitude);
+            }
+        }
+
+        /// перемещением маркера положения пользователя
+        function moveUserLoactionMarker(latitude, longitude) {
+            userLocationMarker.slideTo([latitude, longitude], {duration: 500, keepAtCenter: true})
+        }
+
+        /// удаление маркера положения пользователя
+        function removeUserLocationMarker() {
+            if (userLocationMarker) {
+                userLocationMarker.remove();
+                userLocationMarker = undefined;
+            }
+        }
+
         /// добавление иконки
         function addIcon(id, imageUrl, height, width) {
             var icon = DG.icon({
@@ -131,6 +178,10 @@
                 // добавляем маркер в группу
                 marker.addTo(markers);
             }
+        }
+
+        function _findMarker(id) {
+            return markers.getLayers().find(element => element.id == id);
         }
 
         /// удаление всех маркеров

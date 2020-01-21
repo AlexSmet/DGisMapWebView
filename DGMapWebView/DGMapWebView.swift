@@ -49,6 +49,8 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
 
     public var delegate: DGMapWebViewDelegate?
 
+    public var userLocationIconUrl: String?
+
     private var initLatitude: Double!
     private var initLongitude: Double!
     private var initZoom: Int!
@@ -149,13 +151,29 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         }
     }
 
-    /// Позиционирование маркера "Дом" в центре карты
-    public func setHome(latitude: Float, longitude: Float, zoom: Int? = nil) {
-        if let zoom = zoom {
-            webView.evaluateJavaScript("setHome(\(latitude), \(longitude), \(zoom))")
-        } else {
-            webView.evaluateJavaScript("setHome(\(latitude), \(longitude))")
-        }
+    /// Отображение маркера "Дом"
+    public func showHome(iconId: String, latitude: Float, longitude: Float) {
+        webView.evaluateJavaScript("showHomeMarker(\"\(iconId)\", \(latitude), \(longitude))")
+    }
+
+    /// Скрытие маркера "Дом"
+    public func hideHome() {
+        webView.evaluateJavaScript("removeHomeMarker()")
+    }
+
+    /// Позиционирование пользователя в центре карты
+    public func showUserLocation(iconId: String, latitude: Float, longitude: Float) {
+        webView.evaluateJavaScript("showUserLocationMarker(\"\(iconId)\", \(latitude), \(longitude))")
+    }
+
+    /// Перемещение маркера пользователя
+    public func moveUserLocation(latitude: Float, longitude: Float) {
+        webView.evaluateJavaScript("moveUserLoactionMarker(\(latitude), \(longitude))")
+    }
+
+    /// Скрытие маркера положения пользователя на карте
+    public func hideUserLocation() {
+        webView.evaluateJavaScript("removeUserLocationMarker()")
     }
 
     /// Добавление иконки

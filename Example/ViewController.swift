@@ -41,7 +41,6 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
         print("2Gis map loaded!")
         addIcons()
         addMarkers()
-        mapView.setHome(latitude: 55.753215, longitude: 37.622504)
         MBProgressHUD.hide(for: view, animated: true)
     }
 
@@ -64,6 +63,8 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
     // MARK: -  Добавление маркеров
 
     private func addIcons() {
+        mapView.addIcon(id: "home", imageUrl: "https://img.icons8.com/flat_round/64/000000/home--v1.png", height: 30, width: 30)
+        mapView.addIcon(id: "user", imageUrl: "https://img.icons8.com/doodle/50/000000/street-view.png", height: 30, width: 30)
         mapView.addIcon(id: "0", imageUrl: "https://img.icons8.com/flat_round/64/000000/salamander--v1.png", height: 30, width: 30)
         mapView.addIcon(id: "1", imageUrl: "https://img.icons8.com/flat_round/64/000000/owl--v1.png", height: 30, width: 30)
         mapView.addIcon(id: "2", imageUrl: "https://img.icons8.com/flat_round/64/000000/pinguin--v1.png", height: 30, width: 30)
@@ -90,7 +91,6 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
              self.mapView.addMarker(id: "3", iconId: "1", latitude: 55.738538, longitude: 37.633853)
              self.mapView.addMarker(id: "4", iconId: "1", latitude: 55.743089, longitude: 37.561240)
              self.mapView.addMarker(id: "5", iconId: "9", latitude: 55.722845, longitude: 37.621493)
-             self.mapView.addMarker(id: "6", iconId: "9", latitude: 55.738683, longitude: 37.578835)
 
             MBProgressHUD.hide(for: self.view, animated: true)
         }
@@ -135,5 +135,26 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
             }
         }
     }
+
+    @IBAction func showHomeClick(_ sender: UIButton) {
+        mapView.showHome(iconId: "home", latitude: 55.738683, longitude: 37.578835)
+    }
+
+    @IBAction func hideHomeClick(_ sender: UIButton) {
+        mapView.hideHome()
+    }
+
+    @IBAction func showLocationClick(_ sender: UIButton) {
+        mapView.showUserLocation(iconId: "user", latitude: 55.738683, longitude: 37.578835)
+    }
+
+    @IBAction func moveLOcationClick(_ sender: UIButton) {
+        mapView.moveUserLocation(latitude: 55.756111, longitude: 37.625420)
+    }
+
+    @IBAction func hideLocationClick(_ sender: UIButton) {
+        mapView.hideUserLocation()
+    }
+
 }
 

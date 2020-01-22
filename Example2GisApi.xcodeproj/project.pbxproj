@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BFBE2A0AE3B2AC57374AA4C3 /* Pods_Example2GisApi.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 947D9D08A9258C8E1B947D19 /* Pods_Example2GisApi.framework */; };
+		FA08A24623D72D95003557B9 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08A24523D72D95003557B9 /* LocationManager.swift */; };
 		FAAC381723B9CFE100A23D8E /* DGMap.html in Resources */ = {isa = PBXBuildFile; fileRef = FAAC381623B9CFE100A23D8E /* DGMap.html */; };
 		FAE3F9C023B6235C00F6E7BC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */; };
 		FAE3F9C423B6235C00F6E7BC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAE3F9C323B6235C00F6E7BC /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 		0391BB8FACA9EF1E7D3F7CB0 /* Pods-Example2GisApi.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example2GisApi.debug.xcconfig"; path = "Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi.debug.xcconfig"; sourceTree = "<group>"; };
 		947D9D08A9258C8E1B947D19 /* Pods_Example2GisApi.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Example2GisApi.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CF5CD3ACFA8319173AEA530A /* Pods-Example2GisApi.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Example2GisApi.release.xcconfig"; path = "Target Support Files/Pods-Example2GisApi/Pods-Example2GisApi.release.xcconfig"; sourceTree = "<group>"; };
+		FA08A24523D72D95003557B9 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		FAAC381623B9CFE100A23D8E /* DGMap.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = DGMap.html; sourceTree = "<group>"; };
 		FAE3F9BC23B6235C00F6E7BC /* Example2GisApi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Example2GisApi.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 			children = (
 				FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */,
 				FAE3F9C323B6235C00F6E7BC /* ViewController.swift */,
+				FA08A24523D72D95003557B9 /* LocationManager.swift */,
 				FAE3F9C523B6235C00F6E7BC /* Main.storyboard */,
 				FAE3F9C823B6236300F6E7BC /* Assets.xcassets */,
 				FAE3F9CA23B6236300F6E7BC /* LaunchScreen.storyboard */,
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA08A24623D72D95003557B9 /* LocationManager.swift in Sources */,
 				FAE3F9C423B6235C00F6E7BC /* ViewController.swift in Sources */,
 				FAE3F9C023B6235C00F6E7BC /* AppDelegate.swift in Sources */,
 				FAE3F9D523B6248300F6E7BC /* DGMapWebView.swift in Sources */,

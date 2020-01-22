@@ -14,6 +14,8 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
 
     @IBOutlet weak var mapView: DGMapWebView!
 
+    let locationManager = LocationManager()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -41,6 +43,7 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
         print("2Gis map loaded!")
         addIcons()
         addMarkers()
+        locationManager.delegate = self
         MBProgressHUD.hide(for: view, animated: true)
     }
 
@@ -53,7 +56,7 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
         print("Map was moved! zoom = \(zoom), bounds = \(mapBounds)")
     }
 
-    func markerClicked(_ id: String, latitude: Float, longitude: Float) {
+    func markerClicked(_ id: String, latitude: Double, longitude: Double) {
         mapView.setView(latitude: latitude, longitude: longitude)
         let alert = UIAlertController(title: nil, message: " MarkerId: \(id) \n Latitude: \(latitude) \n Longitude: \(longitude)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
@@ -82,8 +85,8 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
 
         DispatchQueue.main.async {
              for i in 0..<1000 {
-                 let lat = Float.random(in: 55.7...55.8)
-                 let lng = Float.random(in: 37.4...37.8)
+                 let lat = Double.random(in: 55.7...55.8)
+                 let lng = Double.random(in: 37.4...37.8)
                  self.mapView.addMarker(id: "\(i)", iconId: "\(i%10)", latitude: lat, longitude: lng)
              }
              self.mapView.addMarker(id: "1", iconId: "0", latitude: 55.756111, longitude: 37.625420)
@@ -119,14 +122,6 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
     }
 
     @IBAction func getBoundsClick(_ sender: UIButton) {
-        mapView.getZoom {
-            if let zoom = $0 {
-                print("map zoom = \(zoom)")
-            } else {
-                print("map zoom unavailable")
-            }
-        }
-
         mapView.getBounds { mapBounds in
             if let mapBounds = mapBounds {
                 print("map bounds = \(mapBounds)")
@@ -145,16 +140,25 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
     }
 
     @IBAction func showLocationClick(_ sender: UIButton) {
-        mapView.showUserLocation(iconId: "user", latitude: 55.738683, longitude: 37.578835)
+        locationManager.findLocation()
     }
 
-    @IBAction func moveLOcationClick(_ sender: UIButton) {
+    @IBAction func moveLocationClick(_ sender: UIButton) {
         mapView.moveUserLocation(latitude: 55.756111, longitude: 37.625420)
     }
 
     @IBAction func hideLocationClick(_ sender: UIButton) {
         mapView.hideUserLocation()
     }
-
 }
 
+
+extension ViewController: LocationManagerDelegate {
+    func locationDefined(_ userLocation: CLLocationCoordinate2D) {
+        mapView.showUserLocation(iconId: "user", latitude: userLocation.latitude, longitude: userLocation.longitude)
+    }
+
+    func locationError(_ error: LocationError) {
+        print("Location error: \(error)")
+    }
+}

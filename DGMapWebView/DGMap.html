@@ -40,7 +40,7 @@
             }).then(function() {
                 var bounds = null;
                 if (maxBoundsTopLeftLatitude != null && maxBoundsTopLeftLongitude != null && maxBoundsBottomRightLatitude != null && maxBoundsBottomRighLongitude != null) {
-                    bounds =DG.latLngBounds(DG.latLng(maxBoundsTopLeftLatitude, maxBoundsTopLeftLongitude), DG.latLng(maxBoundsBottomRightLatitude, maxBoundsBottomRighLongitude));
+                    bounds = DG.latLngBounds([maxBoundsTopLeftLatitude, maxBoundsTopLeftLongitude], [maxBoundsBottomRightLatitude, maxBoundsBottomRighLongitude]);
                 }
 
                 // создаем карту
@@ -105,6 +105,11 @@
             ];
         }
 
+        /// Определение попадает точка в видимую область карты или нет
+        function boundsContains(latitude, longitude) {
+            return map.getBounds().contains([latitude, longitude]);
+        }
+
         /// позиционирование точки в центре карты, с заданнным масштабом
         function setView(latitude, longitude, zoom) {
             map.setView({lat: latitude, lng: longitude}, zoom);
@@ -130,18 +135,35 @@
 
         /// добавление маркера положения пользователя
         function showUserLocationMarker(iconId, latitude, longitude) {
-            removeUserLocationMarker();
-
             var icon = _findIcon(iconId);
-            if (icon) {
+            // если иконка не найдена, то удаляем маркер и выходим
+            if (icon == undefined) {
+                removeUserLocationMarker();
+                return
+            }
+            // если маркер существет
+            if (userLocationMarker) {
+                // если старая и новая иконки отличаются, то устанавливаем новую иконку
+                if (userLocationMarker._icon.src != icon.iconUrl) {
+                    userLocationMarker.setIcon(icon);
+                }
+                // если маркер виден на экране, и новые координаты тоже на экране, то обеспечиваем плавное движение маркера
+                if (boundsContains(userLocationMarker._latlng.lat, userLocationMarker._latlng.lng) && boundsContains(latitude, longitude)) {
+                    moveUserLoactionMarker(latitude, longitude, false);
+                } else {
+                    setView(latitude, longitude);
+                    userLocationMarker.setLatLng([latitude, longitude]);
+                }
+            } else {
+                // если маркер не существет, то создаем его
                 userLocationMarker = DG.marker([latitude, longitude], {icon: icon, zIndexOffset: 1000}).addTo(map);
                 setView(latitude, longitude);
             }
         }
 
-        /// перемещением маркера положения пользователя
-        function moveUserLoactionMarker(latitude, longitude) {
-            userLocationMarker.slideTo([latitude, longitude], {duration: 500, keepAtCenter: true})
+        /// перемещение маркера положения пользователя
+        function moveUserLoactionMarker(latitude, longitude, keepAtCenter = true) {
+            userLocationMarker.slideTo([latitude, longitude], {duration: 500, keepAtCenter: keepAtCenter});
         }
 
         /// удаление маркера положения пользователя

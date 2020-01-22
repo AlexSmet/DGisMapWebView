@@ -41,7 +41,7 @@ public protocol DGMapWebViewDelegate {
     /// Карта была перемещена или был изменен масштаб
     func mapMoved(zoom: Int, bounds: MapBounds) -> Void
     /// Маркер был выбран
-    func markerClicked(_ :String, latitude: Float, longitude: Float) -> Void
+    func markerClicked(_ :String, latitude: Double, longitude: Double) -> Void
 }
 
 public class DGMapWebView: UIView, WKNavigationDelegate {
@@ -142,8 +142,19 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         }
     }
 
+    /// Проверка попадания точки в указанные границы
+    public func isBoundsContains(latitude: Double, longitude: Double, complition: @escaping (_: Bool) -> Void)  {
+        webView.evaluateJavaScript("boundsContains(\(latitude), \(longitude))") { (result, error) in
+            guard let result = result as? Int else {
+                return complition(false)
+            }
+
+            return complition(result == 1)
+        }
+    }
+
     /// Позиционирование с центром в указанных координатах
-    public func setView(latitude: Float, longitude: Float, zoom: Int? = nil) {
+    public func setView(latitude: Double, longitude: Double, zoom: Int? = nil) {
         if let zoom = zoom {
             webView.evaluateJavaScript("setView(\(latitude), \(longitude), \(zoom))")
         } else {
@@ -152,7 +163,7 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
     }
 
     /// Отображение маркера "Дом"
-    public func showHome(iconId: String, latitude: Float, longitude: Float) {
+    public func showHome(iconId: String, latitude: Double, longitude: Double) {
         webView.evaluateJavaScript("showHomeMarker(\"\(iconId)\", \(latitude), \(longitude))")
     }
 
@@ -162,12 +173,12 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
     }
 
     /// Позиционирование пользователя в центре карты
-    public func showUserLocation(iconId: String, latitude: Float, longitude: Float) {
+    public func showUserLocation(iconId: String, latitude: Double, longitude: Double) {
         webView.evaluateJavaScript("showUserLocationMarker(\"\(iconId)\", \(latitude), \(longitude))")
     }
 
     /// Перемещение маркера пользователя
-    public func moveUserLocation(latitude: Float, longitude: Float) {
+    public func moveUserLocation(latitude: Double, longitude: Double) {
         webView.evaluateJavaScript("moveUserLoactionMarker(\(latitude), \(longitude))")
     }
 
@@ -187,7 +198,7 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
     }
 
     /// Добавление маркера
-    public func addMarker(id: String, iconId: String, latitude: Float, longitude: Float) {
+    public func addMarker(id: String, iconId: String, latitude: Double, longitude: Double) {
         let js = String(format: "addMarker(\"%@\", \"%@\", %f, %f)", id, iconId, latitude, longitude)
         webView.evaluateJavaScript(js){ [weak self] _, error in
             if let error = error {
@@ -280,7 +291,7 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
     private func markerClicked(queryItems: [URLQueryItem]?) {
         guard let queryItems = queryItems, queryItems.count == 3 else { return }
         guard let markerId = queryItems[0].value, let latitudeString = queryItems[1].value, let longitudeString = queryItems[2].value else { return }
-        guard let latitude = Float(latitudeString), let longitude = Float(longitudeString) else { return }
+        guard let latitude = Double(latitudeString), let longitude = Double(longitudeString) else { return }
 
         delegate?.markerClicked(markerId, latitude: latitude, longitude: longitude)
     }

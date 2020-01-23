@@ -40,6 +40,8 @@ public protocol DGMapWebViewDelegate {
     func mapError(_ :String) -> Void
     /// Карта была перемещена или был изменен масштаб
     func mapMoved(zoom: Int, bounds: MapBounds) -> Void
+    /// Кластер был выбран
+    func clusterClicked(zoom: Int, latitude: Double, longitude: Double) -> Void
     /// Маркер был выбран
     func markerClicked(_ :String, latitude: Double, longitude: Double) -> Void
 }
@@ -197,6 +199,16 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         }
     }
 
+    /// Добавление кластера
+    public func addCluster(_ text: String, latitude: Double, longitude: Double) {
+        let js = String(format: "addCluster(\"%@\", %f, %f)", text, latitude, longitude)
+        webView.evaluateJavaScript(js){ [weak self] _, error in
+            if let error = error {
+                self?.delegate?.mapError("Ошибка при добавлении кластера: \(error)")
+            }
+        }
+    }
+
     /// Добавление маркера
     public func addMarker(id: String, iconId: String, latitude: Double, longitude: Double) {
         let js = String(format: "addMarker(\"%@\", \"%@\", %f, %f)", id, iconId, latitude, longitude)
@@ -262,6 +274,8 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
             delegate?.mapError("Карта недоступна")
         case "mapMoved":
             mapMoved(queryItems: queryItems)
+        case "clusterClicked":
+            clusterClicked(queryItems: queryItems)
         case "markerClicked":
             markerClicked(queryItems: queryItems)
         default: break
@@ -286,6 +300,14 @@ public class DGMapWebView: UIView, WKNavigationDelegate {
         let mapBounds = MapBounds(southWest: CLLocationCoordinate2D(latitude: southWestLat, longitude: southWestLng),
                                   northEast: CLLocationCoordinate2D(latitude: northEastLat, longitude: northEastLng))
         delegate?.mapMoved(zoom: zoom, bounds: mapBounds)
+    }
+
+    private func clusterClicked(queryItems: [URLQueryItem]?) {
+        guard let queryItems = queryItems, queryItems.count == 3 else { return }
+        guard let zoomString = queryItems[0].value, let latitudeString = queryItems[1].value, let longitudeString = queryItems[2].value else { return }
+        guard let zoom = Int(zoomString), let latitude = Double(latitudeString), let longitude = Double(longitudeString) else { return }
+
+        delegate?.clusterClicked(zoom: zoom, latitude: latitude, longitude: longitude)
     }
 
     private func markerClicked(queryItems: [URLQueryItem]?) {

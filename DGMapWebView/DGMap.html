@@ -10,9 +10,29 @@
             margin: 0px;
         }
     </style>
+    <style>
+        .cluster {
+            background: rgb(91, 192, 133, 0.6);
+        }
+        .cluster {
+            background-clip: padding-box;
+            border-radius: 25px;
+            }
+        .cluster div {
+            width: 40px;
+            height: 40px;
+            margin-left: 5px;
+            margin-top: 5px;
+
+            text-align: center;
+            border-radius: 20px;
+            font: 12px "Helvetica Neue", Arial, Helvetica, sans-serif;
+            }
+        .cluster span {
+            line-height: 40px;
+        }
+    </style>
     <script src="https://maps.api.2gis.ru/2.0/loader.js?pkg=basic"></script>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css" />
 </head>
 <body>
     <div id="map" style="width:100%; height:100%"></div>
@@ -32,9 +52,6 @@
         /// инициализация карты
         function init({latitude, longitude, zoom = 14, minZoom = 8, disableClusteringAtZoom = 14, maxClusterRadius = 80, maxBoundsTopLeftLatitude = null, maxBoundsTopLeftLongitude = null, maxBoundsBottomRightLatitude = null, maxBoundsBottomRighLongitude = null}) {
             DG.then(function() {
-                // загрузка кода модуля кластеризации
-                return DG.plugin('https://2gis.github.io/mapsapi/vendors/Leaflet.markerCluster/leaflet.markercluster-src.js');
-            }).then(function() {
                 // загрузка кода модуля для плавного перемещения маркера
                 return DG.plugin('https://unpkg.com/leaflet.marker.slideto@0.2.0/Leaflet.Marker.SlideTo.js');
             }).then(function() {
@@ -59,10 +76,7 @@
                 map.on('moveend', element => onMapMoveEnd());
 
                 // создаем группу для маркеров
-                markers = DG.markerClusterGroup({
-                    disableClusteringAtZoom: disableClusteringAtZoom,
-                    maxClusterRadius: maxClusterRadius
-                });
+                markers = DG.featureGroup();
                 map.addLayer(markers);
 
                 // позиционируем карту, что бы стрельнуло событие инициализации карты ('load')
@@ -188,6 +202,14 @@
             return iconList.find(element => element.id == id);
         }
 
+        /// Добавление кластера 
+        function addCluster(text, latitude, longitude) {
+            var icon = DG.divIcon({ html: '<div class = "cluster"><span>'+text+'</span></div>', className: 'cluster', iconSize: [50, 50] })
+            var cluster = DG.marker([latitude, longitude], {icon: icon});
+            cluster.on("click", function(e) { onClusterClicked(e.latlng.lat, e.latlng.lng) });
+            cluster.addTo(markers);
+        }
+
         /// добавление маркера
         function addMarker(id, iconId, latitude, longitude) {
             var icon = _findIcon(iconId);
@@ -219,6 +241,12 @@
         /// событие клика по маркеру
         function onMarkerClicked(id, latitude, longitude) {
             open('callback://markerClicked?id='+id+'&lat='+latitude+'&lng='+longitude, '_self');
+        }
+
+        function onClusterClicked(latitude, longitude) {
+            setView(latitude, longitude, map._zoom + 1);
+            removeAllMarkers();
+            open('callback://clusterClicked?zoom='+map._zoom+'&lat='+latitude+'&lng='+longitude, '_self');
         }
 
         /// событие окончания загрузки карты

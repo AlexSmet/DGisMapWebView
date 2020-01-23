@@ -56,6 +56,12 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
         print("Map was moved! zoom = \(zoom), bounds = \(mapBounds)")
     }
 
+    func clusterClicked(zoom: Int, latitude: Double, longitude: Double) {
+        let alert = UIAlertController(title: nil, message: " Cluster Latitude: \(latitude) \n Longitude: \(longitude)", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+
     func markerClicked(_ id: String, latitude: Double, longitude: Double) {
         mapView.setView(latitude: latitude, longitude: longitude)
         let alert = UIAlertController(title: nil, message: " MarkerId: \(id) \n Latitude: \(latitude) \n Longitude: \(longitude)", preferredStyle: .alert)
@@ -89,11 +95,11 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
                  let lng = Double.random(in: 37.4...37.8)
                  self.mapView.addMarker(id: "\(i)", iconId: "\(i%10)", latitude: lat, longitude: lng)
              }
-             self.mapView.addMarker(id: "1", iconId: "0", latitude: 55.756111, longitude: 37.625420)
-             self.mapView.addMarker(id: "2", iconId: "0", latitude: 55.753570, longitude: 37.632286)
-             self.mapView.addMarker(id: "3", iconId: "1", latitude: 55.738538, longitude: 37.633853)
-             self.mapView.addMarker(id: "4", iconId: "1", latitude: 55.743089, longitude: 37.561240)
-             self.mapView.addMarker(id: "5", iconId: "9", latitude: 55.722845, longitude: 37.621493)
+             self.mapView.addCluster("22", latitude: 55.756111, longitude: 37.625420)
+             self.mapView.addCluster("5200", latitude: 55.753570, longitude: 37.632286)
+             self.mapView.addCluster("1000", latitude: 55.738538, longitude: 37.633853)
+             self.mapView.addCluster("999", latitude: 55.743089, longitude: 37.561240)
+             self.mapView.addCluster("9", latitude: 55.722845, longitude: 37.621493)
 
             MBProgressHUD.hide(for: self.view, animated: true)
         }

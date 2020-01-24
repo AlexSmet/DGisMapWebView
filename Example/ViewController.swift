@@ -146,7 +146,7 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
     }
 
     @IBAction func showLocationClick(_ sender: UIButton) {
-        locationManager.findLocation()
+        locationManager.startLocation()
     }
 
     @IBAction func moveLocationClick(_ sender: UIButton) {
@@ -160,11 +160,49 @@ class ViewController: UIViewController, DGMapWebViewDelegate{
 
 
 extension ViewController: LocationManagerDelegate {
+    
     func locationDefined(_ userLocation: CLLocationCoordinate2D) {
         mapView.showUserLocation(iconId: "user", latitude: userLocation.latitude, longitude: userLocation.longitude)
     }
 
     func locationError(_ error: LocationError) {
-        print("Location error: \(error)")
+        switch error {
+        case .serviceDisabled:
+            showMessageGeolocationDisabled()
+        case .serviceRestricted:
+            showMessageGeolocationRestricted()
+        case .accessDenied:
+            showOfferToAcccessGeolocation()
+        default:
+            print("Location error: \(error)")
+        }
+    }
+
+    private func showMessageGeolocationDisabled() {
+        let alertController = UIAlertController(title: "Службы геолокации отключены на устройстве", message: "Для определения Вашего местоположения нужно включить службы геолокации в настройках устройства.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Закрыть", style: .default, handler: nil))
+
+        present(alertController, animated: true)
+    }
+
+    private func showMessageGeolocationRestricted() {
+        let alertController = UIAlertController(title: "", message: "Сервисы геолокации недоступны.", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Закрыть", style: .default, handler: nil))
+
+        present(alertController, animated: true)
+    }
+
+    private func showOfferToAcccessGeolocation() {
+        let alertController = UIAlertController(title: "У приложения нет доступа к службам геолокации", message: "Перейти к настройкам приложения, для включения доступа к службам геолокации?", preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Да", style: .default, handler: { [weak self] _ in self?.showApplicationSettings() }))
+        alertController.addAction(UIAlertAction(title: "Нет", style: .cancel, handler: nil))
+        present(alertController, animated: true)
+    }
+
+    private func showApplicationSettings() {
+        let settingUrl = URL(string: UIApplication.openSettingsURLString)
+        DispatchQueue.main.async {
+            UIApplication.shared.open(settingUrl!, options: [:], completionHandler: nil)
+        }
     }
 }

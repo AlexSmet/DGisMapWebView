@@ -63,10 +63,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		FAA1973023D9C734009CC3D7 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				FA08A24523D72D95003557B9 /* LocationManager.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
 		FAE3F9B323B6235C00F6E7BC = {
 			isa = PBXGroup;
 			children = (
 				FAE3F9D323B6237E00F6E7BC /* DGMapWebView */,
+				FAA1973023D9C734009CC3D7 /* Location */,
 				FAE3F9BE23B6235C00F6E7BC /* Example */,
 				FAE3F9BD23B6235C00F6E7BC /* Products */,
 				2FDB41FF6BA44726E59D44D3 /* Pods */,
@@ -87,7 +96,6 @@
 			children = (
 				FAE3F9BF23B6235C00F6E7BC /* AppDelegate.swift */,
 				FAE3F9C323B6235C00F6E7BC /* ViewController.swift */,
-				FA08A24523D72D95003557B9 /* LocationManager.swift */,
 				FAE3F9C523B6235C00F6E7BC /* Main.storyboard */,
 				FAE3F9C823B6236300F6E7BC /* Assets.xcassets */,
 				FAE3F9CA23B6236300F6E7BC /* LaunchScreen.storyboard */,
